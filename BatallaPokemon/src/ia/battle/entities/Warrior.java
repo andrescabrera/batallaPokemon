@@ -1,8 +1,6 @@
 package ia.battle.entities;
 
 import java.util.ArrayList;
-
-import ia.battle.camp.BattleField;
 import ia.battle.camp.ConfigurationManager;
 import ia.battle.camp.FieldCell;
 import ia.exceptions.RuleException;

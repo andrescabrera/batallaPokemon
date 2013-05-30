@@ -1,9 +1,7 @@
 package ia.battle.example;
 
-import ia.battle.camp.BattleField;
 import ia.battle.entities.Warrior;
 import ia.battle.entities.WarriorManager;
-import ia.exceptions.OutOfMapException;
 import ia.exceptions.RuleException;
 
 public class AndrewWarriorManager extends WarriorManager {
