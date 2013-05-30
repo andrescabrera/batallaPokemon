@@ -163,16 +163,18 @@ public class BattleField {
 		currentWarrior = warrior1;
 
 		
-		/*
+		
 		// TODO: Ciclo de lucha
 		do {
 
+			currentWarrior.playTurn(100);
+				
+			if(currentWarrior == warrior1) 
+				currentWarrior = warrior2; 
+			else 
+				currentWarrior = warrior1;
 			
-			
-			
-			
-		} while (true);
-*/
+		} while (currentWarrior.getHealth() > 0); //Que no se haya muerto ninguno de los dos?
 	}
 
 	public static void main(String[] args) {
