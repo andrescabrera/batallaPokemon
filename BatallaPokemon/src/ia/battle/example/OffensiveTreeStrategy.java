@@ -10,12 +10,10 @@ public class OffensiveTreeStrategy implements TurnStrategy {
 	
 	private PathFindingStrategy pathFinder = new AStarAlgorithm();
 	
-	private FieldCell getIdealPosition(EnemyData enemyData) {
-		FieldCell posicionDeAtaque = null;
-		// TODO Calcular la posicion mas cerca de ataque 
-		// (para ponerse al lado del enemigo)
+	private FieldCell getIdealPosition(AndrewWarrior warrior, EnemyData enemyData) {
+		FieldCell posicionDeAtaque = null; //TODO Haces el pathFinding completo y le restas uno
 		
-		//Debería hacer el pathFinding hasta el enemigo y quedarme en la anteultima posicion
+		pathFinder.findCompletePath(warrior.getPosition(), enemyData.getFieldCell());
 		return posicionDeAtaque;
 	}
 
