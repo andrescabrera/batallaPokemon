@@ -19,4 +19,4 @@ Reglas de juego (UP Virtual - 9.0):
 
 - Al alcanzar un turno determinado se empieza a achicar el tamaño del mapa.
 
-- 
+![Diagrama de Clases](https://raw.github.com/andrescabrera/batallaPokemon/master/MainDiagram.png)
