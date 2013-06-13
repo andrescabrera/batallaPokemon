@@ -15,58 +15,68 @@ public class AStarAlgorithm implements PathFindingStrategy {
 	@Override
 	public List<FieldCell> findPath(FieldCell source, FieldCell target,
 			int warriorSpeed) {
-		//A* hasta el objetivo indicado haciendo solo los saltos indicados por warriorSpeed
+		// A* hasta el objetivo indicado haciendo solo los saltos indicados por
+		// warriorSpeed
 		List<FieldCell> fullPath = findCompletePath(source, target);
-		
+
 		return cropPath(fullPath, warriorSpeed);
 	}
 
 	private List<FieldCell> cropPath(List<FieldCell> fullPath, int warriorSpeed) {
-		
-		return null;
+		List<FieldCell> actionPath = new ArrayList<FieldCell>();
+		for (int i = 0; i < warriorSpeed; i++) {
+			actionPath.add(fullPath.get(i));
+		}
+		return actionPath;
 	}
 
 	@Override
 	public List<FieldCell> findCompletePath(FieldCell inicio, FieldCell destino) {
-			
 
 		StepComparator stepComparator = new StepComparator(destino);
-		PriorityQueue<Step> listaAbierta = new PriorityQueue<Step>(1000, stepComparator);
-		
-			TreeSet<FieldCell> listaCerrada = new TreeSet<FieldCell>();
-				
-			listaAbierta.add(new Step(inicio));
-			
-			do
-			{
-				Step step = listaAbierta.poll();
-				listaCerrada.add(step.nodoActual);
-				if(isGoal(step, destino))
-				{
-					return stepToFieldCell(step);
-				}
-				
-				for(Step pasoSiguiente : getPosibleSteps(step, listaCerrada))
-				{
-					listaAbierta.add(pasoSiguiente);		
-				}
-			}while(!listaAbierta.isEmpty());
-			return null;
-		}
+		PriorityQueue<Step> listaAbierta = new PriorityQueue<Step>(1000,
+				stepComparator);
+
+		TreeSet<FieldCell> listaCerrada = new TreeSet<FieldCell>();
+
+		listaAbierta.add(new Step(inicio));
+
+		Step step;
+
+		mainloop: do {
+
+			do {
+				step = listaAbierta.poll();
+				if (step == null)
+					break mainloop;
+			} while (listaCerrada.contains(step.nodoActual));
+
+			listaCerrada.add(step.nodoActual);
+			if (isGoal(step, destino)) {
+				return stepToFieldCell(step);
+			}
+
+			for (Step pasoSiguiente : getPosibleSteps(step, listaCerrada)) {
+
+				listaAbierta.add(pasoSiguiente);
+			}
+		} while (!listaAbierta.isEmpty());
+		return null;
+	}
 
 	private List<FieldCell> stepToFieldCell(Step step) {
 		ArrayList<FieldCell> reversepath = new ArrayList<FieldCell>();
-		
-		while(step != null){ 
+
+		while (step != null) {
 			reversepath.add(step.nodoActual);
 			step = step.padre;
 		}
-			
+
 		ArrayList<FieldCell> path = new ArrayList<FieldCell>();
-		for(int i = reversepath.size();  i > -1; i--){
+		for (int i = reversepath.size(); i > -1; i--) {
 			path.add(reversepath.get(i));
 		}
-		
+
 		return path;
 	}
 
