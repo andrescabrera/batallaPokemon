@@ -56,14 +56,14 @@ public class BattleField {
 
 	}
 
-	private void showMap() {		
-		
+	private void showMap() {
+
 		int height = ConfigurationManager.getInstance().getMapHeight();
 		int width = ConfigurationManager.getInstance().getMapWidth();
 
 		for (int i = 1; i < height; i++) {
 			for (int j = 1; j < width; j++) {
-				if(cells[i][j] == warrior1.getPosition())
+				if (cells[i][j] == warrior1.getPosition())
 					System.out.print("1!");
 				else if (cells[i][j] == warrior2.getPosition())
 					System.out.print("2!");
@@ -72,7 +72,7 @@ public class BattleField {
 			}
 			System.out.println();
 		}
-		
+
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
@@ -100,12 +100,18 @@ public class BattleField {
 
 	public EnemyData getEnemyPosition() {
 
-		EnemyData enemyData = null;
-
-		// TODO: buscar alrededor del current si esta el enemigo
-
-		return enemyData;
-
+		if(getEnemyDistance() <= currentWarrior.getRange()){
+			//enemigo dentro del alcance
+			return new EnemyData(getEnemy().getPosition(), getEnemy().getHealth());
+		}
+		//no lo veo
+		return null; 
+	}
+	
+	private int getEnemyDistance(){
+		Double x = Math.floor(Math.sqrt((currentWarrior.getPosition().getX()-getEnemy().getPosition().getX())^2
+				+ (currentWarrior.getPosition().getY()-getEnemy().getPosition().getY())^2));
+		return x.intValue();
 	}
 
 	public ArrayList<FieldCell> getSpecialItems() {
@@ -145,34 +151,36 @@ public class BattleField {
 			warrior1.setPosition(cells[random.nextInt(cells.length)][random
 					.nextInt(cells[0].length)]);
 		} catch (RuleException e) {
-			e.printStackTrace(); // TODO Si la posicion inicial no esta disponible?
+			e.printStackTrace(); // TODO Si la posicion inicial no esta
+									// disponible?
 		}
 
 		try {
 			warrior2.setPosition(cells[random.nextInt(cells.length)][random
 					.nextInt(cells[0].length)]);
 		} catch (RuleException e) {
-			e.printStackTrace(); // TODO Si la posicion inicial no esta disponible?
+			e.printStackTrace(); // TODO Si la posicion inicial no esta
+									// disponible?
 		}
 
 		// TODO: Determinar quien empieza
 		currentWarrior = warrior1;
 
 		// TODO: Ciclo de lucha
-		
+
 		do {
 			BattleField.getInstance().showMap();
-			
+
 			ArrayList<Action> turno = currentWarrior.playTurn(System
 					.currentTimeMillis());
-			if(turno != null)
+			if (turno != null)
 				realizarTurno(turno);
 
 			if (currentWarrior == warrior1)
 				currentWarrior = warrior2;
 			else
 				currentWarrior = warrior1;
-			
+
 		} while (currentWarrior.getHealth() > 0);
 	}
 
@@ -192,14 +200,18 @@ public class BattleField {
 		}
 	}
 
+	private Warrior getEnemy() {
+
+		if (currentWarrior == warrior1) {
+			return warrior2;
+		}
+		
+		return warrior1; 
+	}
+
 	private void moverJugador(ArrayList<FieldCell> celdas) throws RuleException {
 		// Obtengo la posicion del enemigo
-		FieldCell posicionDelEnemigo;
-		if (currentWarrior == warrior1) {
-			posicionDelEnemigo = warrior2.getPosition();
-		} else {
-			posicionDelEnemigo = warrior1.getPosition();
-		}
+		FieldCell posicionDelEnemigo = getEnemy().getPosition();
 
 		// Muevo y si hay alguno problema lo elevo
 		for (FieldCell fieldCell : celdas) {
