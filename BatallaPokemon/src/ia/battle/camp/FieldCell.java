@@ -1,6 +1,6 @@
 package ia.battle.camp;
 
-public class FieldCell {
+public class FieldCell implements Comparable {
 	private int x, y;
 	private FieldCellType fieldCellType;
 	private SpecialItem specialItem;
@@ -36,6 +36,13 @@ public class FieldCell {
 		}
 
 		return "X!";
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		if(o == this) return 0;
+		
+		return 1;
 	}
 
 }

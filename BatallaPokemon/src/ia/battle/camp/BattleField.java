@@ -149,16 +149,16 @@ public class BattleField {
 		// TODO: Los ubica en el mapa (poner en zonas opuestas)
 
 		try {
-			warrior1.setPosition(cells[random.nextInt(cells.length)][random
-					.nextInt(cells[0].length)]);
+			warrior1.setPosition(cells[random.nextInt(cells.length-1)][random
+					.nextInt(cells[0].length-1)]);
 		} catch (RuleException e) {
 			e.printStackTrace(); // TODO Si la posicion inicial no esta
 									// disponible?
 		}
 
 		try {
-			warrior2.setPosition(cells[random.nextInt(cells.length)][random
-					.nextInt(cells[0].length)]);
+			warrior2.setPosition(cells[random.nextInt(cells.length-1)][random
+					.nextInt(cells[0].length-1)]);
 		} catch (RuleException e) {
 			e.printStackTrace(); // TODO Si la posicion inicial no esta
 									// disponible?
@@ -210,12 +210,12 @@ public class BattleField {
 		return warrior1; 
 	}
 
-	private void moverJugador(ArrayList<FieldCell> celdas) throws RuleException {
+	private void moverJugador(List<FieldCell> celdasAMover) throws RuleException {
 		// Obtengo la posicion del enemigo
 		FieldCell posicionDelEnemigo = getEnemy().getPosition();
 
 		// Muevo y si hay alguno problema lo elevo
-		for (FieldCell fieldCell : celdas) {
+		for (FieldCell fieldCell : celdasAMover) {
 			if (fieldCell.getFieldCellType() == FieldCellType.BLOCKED
 					|| fieldCell == posicionDelEnemigo) {
 				throw new RuleException();

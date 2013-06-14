@@ -17,7 +17,11 @@ public class OffensiveTreeStrategy implements TurnStrategy {
 		// TODO Crear las acciones de ataque basandome en un arbol por ejemplo
 		//return moves hasta el enemigo; 3 por turno.
 		List<Action> actionDelTurno = new ArrayList<Action>();
+		
 		List<FieldCell> fullPath = pathFinder.findCompletePath(warrior.getPosition(), enemyData.getFieldCell());
+		
+		fullPath.remove(fullPath.get(fullPath.size() - 1)); //sacar la celda del enemigo
+		fullPath.remove(fullPath.get(0));
 		MovePathBuilder mPathBuilder = new MovePathBuilder();
 		
 		while(fullPath.size() > 0 && actionDelTurno.size() < 3) {

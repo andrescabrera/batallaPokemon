@@ -7,7 +7,7 @@ import ia.battle.camp.FieldCell;
 public class StepComparator implements Comparator<Step>
 {
 	FieldCell destino;
-	public StepComparator(FieldCell detino)
+	public StepComparator(FieldCell destino)
 	{
 		this.destino = destino;
 	}  
@@ -24,11 +24,21 @@ public class StepComparator implements Comparator<Step>
 		Step currentStep = step;
 		while(currentStep != null)
 		{
-			g += getStepAcumCost(currentStep);
+			g += getStepCost(currentStep);
 			currentStep = currentStep.padre;
 		}
 		
-		int h = Math.abs(destino.getX() - step.nodoActual.getX()) - Math.abs(destino.getY() - step.nodoActual.getY());
+		int h = 10*Math.abs(destino.getX() - step.nodoActual.getX()) - Math.abs(destino.getY() - step.nodoActual.getY());
 		return g + h;
+	}
+	
+	private int getStepCost(Step step) {
+		int cont = 0;
+		if(step.padre == null) return 0;
+		if((step.nodoActual.getX() - step.padre.nodoActual.getX()) != 0) cont++;
+		if((step.nodoActual.getY() - step.padre.nodoActual.getY()) != 0) cont++;
+		if(cont == 1) return 10;
+		else if(cont == 2) return 14;
+		else return 0;
 	}
 }

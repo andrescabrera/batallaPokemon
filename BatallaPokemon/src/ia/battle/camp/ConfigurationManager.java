@@ -9,15 +9,15 @@ public final class ConfigurationManager {
 	}
 
 	public int getMaxPointsPerWarrior() {
-		return 100;
+		return 10000;
 	}
 	
 	public int getMapHeight() {
-		return 50;
+		return 30;
 	}
 	
 	public int getMapWidth() {
-		return 50;
+		return 30;
 	}
 	
 	public int getTurnsToShrink() {

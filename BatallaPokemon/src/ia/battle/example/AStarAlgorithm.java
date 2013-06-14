@@ -27,11 +27,7 @@ public class AStarAlgorithm implements PathFindingStrategy {
 
 		mainloop: do {
 
-			do {
-				step = listaAbierta.poll();
-				if (step == null)
-					break mainloop;
-			} while (listaCerrada.contains(step.nodoActual));
+			step = listaAbierta.poll();
 
 			listaCerrada.add(step.nodoActual);
 			if (isGoal(step, destino)) {
@@ -39,8 +35,8 @@ public class AStarAlgorithm implements PathFindingStrategy {
 			}
 
 			for (Step pasoSiguiente : getPosibleSteps(step, listaCerrada)) {
-
-				listaAbierta.add(pasoSiguiente);
+				if(!listaAbierta.contains(pasoSiguiente))
+					listaAbierta.add(pasoSiguiente);
 			}
 		} while (!listaAbierta.isEmpty());
 		return null;
@@ -55,7 +51,7 @@ public class AStarAlgorithm implements PathFindingStrategy {
 		}
 
 		ArrayList<FieldCell> path = new ArrayList<FieldCell>();
-		for (int i = reversepath.size(); i > -1; i--) {
+		for (int i = reversepath.size()-1; i > -1; i--) {
 			path.add(reversepath.get(i));
 		}
 
@@ -66,8 +62,8 @@ public class AStarAlgorithm implements PathFindingStrategy {
 		ArrayList<Step> proximosSteps = new ArrayList<Step>();
 		BattleField battleField = BattleField.getInstance();
 
-		for (int x = -1; x < 1; x++) {
-			for (int y = -1; y < 1; y++) {
+		for (int x = -1; x < 2; x++) {
+			for (int y = -1; y < 2; y++) {
 				if (x == 0 && y == 0) {
 					continue;
 				}
@@ -76,8 +72,12 @@ public class AStarAlgorithm implements PathFindingStrategy {
 					FieldCell proxima = battleField.getFieldCell(x
 							+ step.nodoActual.getX(),
 							y + step.nodoActual.getY());
+						if(proxima == null)
+						{
+							throw new OutOfMapException();
+						}
 					if (proxima.getFieldCellType() != FieldCellType.BLOCKED
-							&& listaCerrada.contains(proxima)) {
+							&& !listaCerrada.contains(proxima)) {
 						proximosSteps.add(new Step(proxima, step));
 					}
 				} catch (OutOfMapException ex) {
