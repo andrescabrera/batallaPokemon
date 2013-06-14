@@ -13,24 +13,6 @@ import java.util.TreeSet;
 public class AStarAlgorithm implements PathFindingStrategy {
 
 	@Override
-	public List<FieldCell> findPath(FieldCell source, FieldCell target,
-			int warriorSpeed) {
-		// A* hasta el objetivo indicado haciendo solo los saltos indicados por
-		// warriorSpeed
-		List<FieldCell> fullPath = findCompletePath(source, target);
-
-		return cropPath(fullPath, warriorSpeed);
-	}
-
-	private List<FieldCell> cropPath(List<FieldCell> fullPath, int warriorSpeed) {
-		List<FieldCell> actionPath = new ArrayList<FieldCell>();
-		for (int i = 0; i < warriorSpeed; i++) {
-			actionPath.add(fullPath.get(i));
-		}
-		return actionPath;
-	}
-
-	@Override
 	public List<FieldCell> findCompletePath(FieldCell inicio, FieldCell destino) {
 
 		StepComparator stepComparator = new StepComparator(destino);

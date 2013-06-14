@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class BattleField {
@@ -187,7 +188,7 @@ public class BattleField {
 	private void realizarTurno(ArrayList<Action> turno) {
 		for (Action action : turno) {
 			if (action instanceof Move) {
-				ArrayList<FieldCell> celdasAMover = ((Move) action).move();
+				List<FieldCell> celdasAMover = ((Move) action).move();
 				try {
 					moverJugador(celdasAMover);
 				} catch (RuleException ex) {

@@ -1,5 +1,6 @@
 package ia.battle.example;
 
+import ia.battle.camp.BattleField;
 import ia.battle.camp.EnemyData;
 import ia.battle.camp.FieldCell;
 import ia.battle.entities.Action;
@@ -17,7 +18,9 @@ public class FindTheEnemyTreeStrategy implements TurnStrategy {
 
 		// TODO NO deberíamos tener al enemigo en el rango de vision... esto se
 		// debería chequear en el arbol de TreeStrategyDispatcher
-
+//		if(BattleField.getInstance().getEnemyPosition() != null){
+//			
+//		}
 		return null;
 	}
 
