@@ -5,6 +5,7 @@ import ia.battle.camp.FieldCell;
 public class Step {
 	public FieldCell nodoActual;
 	public Step padre;
+	public int fCost;
 
 	public Step(FieldCell nodo) {
 		this.nodoActual = nodo;

@@ -9,7 +9,7 @@ public class AndrewWarriorManager extends WarriorManager {
 	@Override
 	public Warrior getNextWarrior() throws RuleException {
 
-		AndrewWarrior andrew = new AndrewWarrior("Andrew", 10, 10, 10, 2, 1000);
+		AndrewWarrior andrew = new AndrewWarrior("Andrew", 10, 10, 10, 1, 1000);
 		
 //		try {
 //			andrew.setPosition(BattleField.getInstance().getFieldCell(0, 0));

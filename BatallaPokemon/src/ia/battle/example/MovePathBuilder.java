@@ -16,9 +16,9 @@ public class MovePathBuilder {
 	//recortar el path de acuerdo a la speed y checkear que no llegue a destino antes de la speed total.
 	private List<FieldCell> cropPath(List<FieldCell> fullPath, int warriorSpeed) {
 		List<FieldCell> actionPath = new ArrayList<FieldCell>();
-		for (int i = 0; i < warriorSpeed && i < fullPath.size(); i++) {
-			actionPath.add(fullPath.get(i));
-			fullPath.remove(i); //Lo saco del fullPath
+		for (int i = 0; i < warriorSpeed && fullPath.size() > 0; i++) {
+			actionPath.add(fullPath.get(0));
+			fullPath.remove(0); //Lo saco del fullPath
 		}
 		
 		return actionPath;

@@ -12,8 +12,13 @@ import java.util.TreeSet;
 
 public class AStarAlgorithm implements PathFindingStrategy {
 
+	private FieldCell destino;
+	private FieldCell inicio;
+
 	@Override
 	public List<FieldCell> findCompletePath(FieldCell inicio, FieldCell destino) {
+		this.inicio = inicio;
+		this.destino = destino;
 
 		StepComparator stepComparator = new StepComparator(destino);
 		PriorityQueue<Step> listaAbierta = new PriorityQueue<Step>(1000,
@@ -25,7 +30,7 @@ public class AStarAlgorithm implements PathFindingStrategy {
 
 		Step step;
 
-		mainloop: do {
+		do {
 
 			step = listaAbierta.poll();
 
@@ -35,11 +40,44 @@ public class AStarAlgorithm implements PathFindingStrategy {
 			}
 
 			for (Step pasoSiguiente : getPosibleSteps(step, listaCerrada)) {
-				if(!listaAbierta.contains(pasoSiguiente))
+				if (!listaAbierta.contains(pasoSiguiente)) {
+					pasoSiguiente.fCost = getFCost(pasoSiguiente);
 					listaAbierta.add(pasoSiguiente);
+				}
 			}
 		} while (!listaAbierta.isEmpty());
 		return null;
+	}
+
+	int getFCost(Step step) {
+		// TODO DEBERIA ESTAR CACHEADO EN EL STEP!
+		int gCost = 0;
+		Step currentStep = step;
+		while (currentStep != null) {
+			gCost += getStepCost(currentStep);
+			currentStep = currentStep.padre;
+		}
+
+		int h = 10 * Math.abs(destino.getX() - step.nodoActual.getX())
+				- Math.abs(destino.getY() - step.nodoActual.getY());
+		
+		return gCost + h;
+	}
+
+	private int getStepCost(Step step) {
+		int cont = 0;
+		if (step.padre == null)
+			return 0;
+		if ((step.nodoActual.getX() - step.padre.nodoActual.getX()) != 0)
+			cont++;
+		if ((step.nodoActual.getY() - step.padre.nodoActual.getY()) != 0)
+			cont++;
+		if (cont == 1)
+			return 10;
+		else if (cont == 2)
+			return 14;
+		else
+			return 0;
 	}
 
 	private List<FieldCell> stepToFieldCell(Step step) {
@@ -51,7 +89,7 @@ public class AStarAlgorithm implements PathFindingStrategy {
 		}
 
 		ArrayList<FieldCell> path = new ArrayList<FieldCell>();
-		for (int i = reversepath.size()-1; i > -1; i--) {
+		for (int i = reversepath.size() - 1; i > -1; i--) {
 			path.add(reversepath.get(i));
 		}
 
@@ -72,10 +110,9 @@ public class AStarAlgorithm implements PathFindingStrategy {
 					FieldCell proxima = battleField.getFieldCell(x
 							+ step.nodoActual.getX(),
 							y + step.nodoActual.getY());
-						if(proxima == null)
-						{
-							throw new OutOfMapException();
-						}
+					if (proxima == null) {
+						throw new OutOfMapException();
+					}
 					if (proxima.getFieldCellType() != FieldCellType.BLOCKED
 							&& !listaCerrada.contains(proxima)) {
 						proximosSteps.add(new Step(proxima, step));
