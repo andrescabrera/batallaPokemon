@@ -6,6 +6,7 @@ import java.util.List;
 import ia.battle.camp.EnemyData;
 import ia.battle.camp.FieldCell;
 import ia.battle.entities.Action;
+import ia.battle.entities.Attack;
 import ia.battle.entities.Move;
 
 public class OffensiveTreeStrategy implements TurnStrategy {
@@ -29,8 +30,9 @@ public class OffensiveTreeStrategy implements TurnStrategy {
 			actionDelTurno.add(moveAction);
 		}
 		
-		if(actionDelTurno.size() < 3) {
-			System.out.println("No complete las 3 actions, entonces te pego, chau.");
+		while(actionDelTurno.size() < 3) {
+			System.out.println("No complete las 3 actions, entonces te pego");
+			actionDelTurno.add(new Attack());
 		}
 		
 		return actionDelTurno;

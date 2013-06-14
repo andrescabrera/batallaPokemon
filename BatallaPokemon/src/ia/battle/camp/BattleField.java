@@ -24,7 +24,8 @@ public class BattleField {
 	private WarriorManager wm1, wm2;
 	private Warrior currentWarrior, warrior1, warrior2;
 	private int warrior1Count, warrior2Count;
-
+	
+	private int w1Health, w2Health; //Agregado por Iñaki p/ poder matar al otro. 
 	private FieldCell[][] cells;
 
 	private Random random = new Random();
@@ -134,6 +135,7 @@ public class BattleField {
 
 		try {
 			warrior1 = wm1.getNextWarrior();
+			w1Health = warrior1.getHealth(); //Necesito la vida p/matar al otro -Iñaki-
 		} catch (RuleException e1) {
 			// Pierde el warrior1
 			e1.printStackTrace();
@@ -141,6 +143,7 @@ public class BattleField {
 
 		try {
 			warrior2 = wm2.getNextWarrior();
+			w2Health = warrior2.getHealth();
 		} catch (RuleException e) {
 			// Pierde el warrior2
 			e.printStackTrace();
@@ -168,7 +171,7 @@ public class BattleField {
 		currentWarrior = warrior1;
 
 		// TODO: Ciclo de lucha
-
+		int currentHealth; 	//para ver si mate al otro -Iñaki-
 		do {
 			BattleField.getInstance().showMap();
 
@@ -177,16 +180,31 @@ public class BattleField {
 			if (turno != null)
 				realizarTurno(turno);
 
-			if (currentWarrior == warrior1)
+			if (currentWarrior == warrior1){
 				currentWarrior = warrior2;
-			else
+				currentHealth = w2Health;
+			}else{
 				currentWarrior = warrior1;
+				currentHealth = w1Health;
+			}
 
-		} while (currentWarrior.getHealth() > 0);
+		}// while (currentWarrior.getHealth() > 0);
+		//ni el battlefield ni el enemigo
+		//pueden modificar la health de un warrior.
+		
+		while(currentHealth > 0);
+		if(currentWarrior == warrior1){
+			System.out.println("Warrior 2 Wins");
+			return;
+		}
+		else{
+			System.out.println("Warrior 1 Wins");
+			return;
+		}
 	}
 
 	private void realizarTurno(ArrayList<Action> turno) {
-		for (Action action : turno) {
+		BattleLoop: for (Action action : turno) {
 			if (action instanceof Move) {
 				List<FieldCell> celdasAMover = ((Move) action).move();
 				try {
@@ -196,8 +214,21 @@ public class BattleField {
 											// mueve hasta donde puede
 				}
 			} else if (action instanceof Attack) {
-				((Attack) action).attack();
+//				((Attack) action).attack();
+				
+//				Comentado por Iñaki
+//				Attack solo sirve para identificar una accion de ataque
+//				pero el warrior no tiene acceso al enemigo para hacerle daño
+//				ni el metodo tiene retorno.
+				
+				if(getEnemy()==warrior1){
+					w1Health-=currentWarrior.getStrength();
+				}else{
+					w2Health-=currentWarrior.getStrength();
+				}
+				System.out.println("w1: "+w1Health+"; w2: "+w2Health);
 			}
+			if(w1Health<=0 || w2Health<=0) break BattleLoop;
 		}
 	}
 
@@ -227,7 +258,6 @@ public class BattleField {
 	public static void main(String[] args) {
 
 		BattleField.getInstance().fight();
-
 	}
 
 }

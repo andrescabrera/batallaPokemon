@@ -8,9 +8,9 @@ public class AndrewWarriorManager extends WarriorManager {
 
 	@Override
 	public Warrior getNextWarrior() throws RuleException {
-
-		AndrewWarrior andrew = new AndrewWarrior("Andrew", 10, 10, 10, 1, 1000);
-		
+		//name, health, defense, strength, speed, range
+		AndrewWarrior andrew = new AndrewWarrior("Andrew", 50, 5, 10, 1, 1000);
+		//fruta de stats, para probar.
 //		try {
 //			andrew.setPosition(BattleField.getInstance().getFieldCell(0, 0));
 //		} catch (OutOfMapException e) {
